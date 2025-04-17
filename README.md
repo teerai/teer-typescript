@@ -34,19 +34,6 @@ await client.ingest.send({
 })
 ```
 
-## Client Structure
-
-The Teer client is designed with a namespaced resource structure, allowing for intuitive API access:
-
-```typescript
-// Basic resource usage
-client.ingest.send(data)
-
-// Example of nested resources (for future API endpoints)
-client.example.list()
-client.example.nested.action(data)
-```
-
 ## API Resources
 
 ### Ingest
@@ -74,13 +61,6 @@ You can specify a custom base URL when initializing the client:
 ```typescript
 const client = new Teer('your-api-key', 'https://custom-api.example.com')
 ```
-
-The client architecture supports different base URLs for different resources:
-
-- The main API endpoints use `api.teer.ai` by default
-- The `ingest` resource automatically uses `track.teer.ai`
-
-This separation allows the client to interact with different services while maintaining a consistent interface.
 
 ### Default Request Configuration
 
