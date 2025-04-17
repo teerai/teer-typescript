@@ -1,6 +1,6 @@
 {
   "name": "@teerai/sdk",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Official TypeScript SDK for Teer API - Track and manage AI model usage",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
