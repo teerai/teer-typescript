@@ -39,16 +39,15 @@ export class Teer {
    * Create a new Teer client
    *
    * @param apiKey Your Teer API key
-   * @param baseURL Optional custom base URL for the API
-   * @param defaultRequestConfig Optional default request configuration
+   * @param options Optional configuration options including baseURL and request settings
    */
-  constructor(apiKey: string, baseURL: string = TEER_API_BASE_URL, defaultRequestConfig: RequestConfigOptions = {}) {
+  constructor(apiKey: string, options: RequestConfigOptions = {}) {
     this._apiKey = apiKey
-    this._baseURL = baseURL
+    this._baseURL = options.baseURL || TEER_API_BASE_URL
     this._defaultRequestConfig = {
-      timeoutMs: defaultRequestConfig.timeoutMs || DEFAULT_TIMEOUT_MS,
-      maxRetries: defaultRequestConfig.maxRetries || MAX_RETRIES,
-      retryDelayMs: defaultRequestConfig.retryDelayMs || RETRY_DELAY_MS,
+      timeoutMs: options.timeoutMs || DEFAULT_TIMEOUT_MS,
+      maxRetries: options.maxRetries || MAX_RETRIES,
+      retryDelayMs: options.retryDelayMs || RETRY_DELAY_MS,
     }
     this.ingest = new IngestResource(this)
   }

@@ -2,15 +2,11 @@ import Teer, { TeerAPIError, TeerTimeoutError, TeerNetworkError, RequestConfigOp
 
 async function main() {
   // Initialize the client with your API key and default request configuration
-  const client = new Teer(
-    'your-api-key',
-    undefined, // Use default base URL
-    {
-      timeoutMs: 8000, // 8 second default timeout
-      maxRetries: 2, // Maximum 2 retries by default
-      retryDelayMs: 500, // Start with 500ms delay by default
-    }
-  )
+  const client = new Teer('your-api-key', {
+    timeoutMs: 8000, // 8 second default timeout
+    maxRetries: 2, // Maximum 2 retries by default
+    retryDelayMs: 500, // Start with 500ms delay by default
+  })
 
   try {
     // Display the client's default request configuration

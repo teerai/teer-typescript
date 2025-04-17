@@ -61,6 +61,11 @@ export interface IngestData {
  */
 export interface RequestConfigOptions {
   /**
+   * Custom base URL for the API
+   */
+  baseURL?: string
+
+  /**
    * Request timeout in milliseconds
    */
   timeoutMs?: number

@@ -8,15 +8,11 @@
 
 ```bash
 npm install @teerai/sdk
-# or
-yarn add @teerai/sdk
-# or
-pnpm add @teerai/sdk
 ```
 
 ## Import and Usage
 
-### ESM (Recommended)
+### ESM
 
 ```typescript
 import { Teer } from '@teerai/sdk'
@@ -29,24 +25,6 @@ const client = new Teer('your-api-key')
 
 ```javascript
 const { Teer } = require('@teerai/sdk')
-
-// Initialize the client with your API key
-const client = new Teer('your-api-key')
-```
-
-### TypeScript
-
-```typescript
-import { Teer } from '@teerai/sdk'
-
-// Initialize the client with your API key
-const client = new Teer('your-api-key')
-```
-
-### Vite/Next.js/Modern Bundlers
-
-```typescript
-import { Teer } from '@teerai/sdk'
 
 // Initialize the client with your API key
 const client = new Teer('your-api-key')
@@ -97,7 +75,7 @@ await client.ingest.send({
 You can specify a custom base URL when initializing the client:
 
 ```typescript
-const client = new Teer('your-api-key', 'https://custom-api.example.com')
+const client = new Teer('your-api-key', { baseURL: 'https://custom-api.example.com' })
 ```
 
 ### Default Request Configuration
@@ -105,15 +83,11 @@ const client = new Teer('your-api-key', 'https://custom-api.example.com')
 You can set default request configuration options when initializing the client:
 
 ```typescript
-const client = new Teer(
-  'your-api-key',
-  undefined, // Use default base URL
-  {
-    timeoutMs: 8000, // 8 second default timeout
-    maxRetries: 2, // Maximum 2 retries by default
-    retryDelayMs: 500, // Start with 500ms delay by default
-  }
-)
+const client = new Teer('your-api-key', {
+  timeoutMs: 8000, // 8 second default timeout
+  maxRetries: 2, // Maximum 2 retries by default
+  retryDelayMs: 500, // Start with 500ms delay by default
+})
 ```
 
 These defaults will be used for all requests made through the client, but can be overridden at the individual request level:
