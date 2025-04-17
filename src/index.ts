@@ -235,6 +235,3 @@ export class Teer {
     return null as unknown as T
   }
 }
-
-// Default export for easier importing
-export default Teer

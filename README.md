@@ -14,10 +14,48 @@ yarn add @teerai/sdk
 pnpm add @teerai/sdk
 ```
 
+## Import and Usage
+
+### ESM (Recommended)
+
+```typescript
+import { Teer } from '@teerai/sdk'
+
+// Initialize the client with your API key
+const client = new Teer('your-api-key')
+```
+
+### CommonJS
+
+```javascript
+const { Teer } = require('@teerai/sdk')
+
+// Initialize the client with your API key
+const client = new Teer('your-api-key')
+```
+
+### TypeScript
+
+```typescript
+import { Teer } from '@teerai/sdk'
+
+// Initialize the client with your API key
+const client = new Teer('your-api-key')
+```
+
+### Vite/Next.js/Modern Bundlers
+
+```typescript
+import { Teer } from '@teerai/sdk'
+
+// Initialize the client with your API key
+const client = new Teer('your-api-key')
+```
+
 ## Quick Start
 
 ```typescript
-import Teer from '@teerai/sdk'
+import { Teer } from '@teerai/sdk'
 
 // Initialize the client with your API key
 const client = new Teer('your-api-key')
@@ -115,7 +153,10 @@ The client implements robust error handling with custom error classes that provi
 ### Handling Errors
 
 ```typescript
-import { TeerAPIError, TeerTimeoutError, TeerNetworkError } from '@teerai/sdk'
+import { Teer, TeerAPIError, TeerTimeoutError, TeerNetworkError } from '@teerai/sdk'
+
+// Initialize the client
+const client = new Teer('your-api-key')
 
 try {
   await client.ingest.send(data)
@@ -165,3 +206,22 @@ await client.ingest.send(data, {
   retryDelayMs: 500, // Start with 500ms delay (default: 300)
 })
 ```
+
+## Module Compatibility
+
+This package is configured to work in various JavaScript environments:
+
+- **Node.js**: Both ESM and CommonJS formats are supported
+- **Modern browsers**: Compatible with modern browsers through bundlers
+- **Edge runtimes**: Works in Cloudflare Workers, Vercel Edge Functions, etc.
+- **Bundlers**: Optimized for Vite, Webpack, Rollup, and other modern bundlers
+
+### Package Format
+
+The package is published as:
+
+- **ESM**: `dist/index.js` (primary format, used by `import` statements)
+- **CommonJS**: `dist/index.cjs` (for compatibility, used by `require()` statements)
+- **TypeScript declarations**: `dist/index.d.ts` (for TypeScript projects)
+
+The package uses named exports for better tree-shaking and compatibility with modern tooling.
