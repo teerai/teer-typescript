@@ -10,26 +10,6 @@
 npm install @teerai/sdk
 ```
 
-## Import and Usage
-
-### ESM
-
-```typescript
-import { Teer } from '@teerai/sdk'
-
-// Initialize the client with your API key
-const client = new Teer('your-api-key')
-```
-
-### CommonJS
-
-```javascript
-const { Teer } = require('@teerai/sdk')
-
-// Initialize the client with your API key
-const client = new Teer('your-api-key')
-```
-
 ## Quick Start
 
 ```typescript
@@ -48,6 +28,54 @@ await client.ingest.send({
     output: 2000,
   },
 })
+```
+
+### Cache usage
+
+- Optionally include per provider cache usage
+
+```typescript
+import { Teer } from '@teerai/sdk'
+
+// Initialize the client with your API key
+const client = new Teer('your-api-key')
+
+// Send usage data
+await client.ingest.send({
+  provider: 'anthropic',
+  model: 'claude-3-haiku-20240307',
+  function_id: 'my-function',
+  usage: {
+    input: 1000,
+    output: 2000,
+    cache: {
+      anthropic: {
+        cache_creation_input_tokens: 750,
+        cache_read_input_tokens: 0,
+      },
+    },
+  },
+})
+```
+
+## Import and Usage
+
+### ESM
+
+```typescript
+import { Teer } from '@teerai/sdk'
+
+// Initialize the client with your API key
+const client = new Teer('your-api-key')
+```
+
+### CommonJS
+
+```javascript
+const { Teer } = require('@teerai/sdk')
+
+// Initialize the client with your API key
+const client = new Teer('your-api-key')
 ```
 
 ## API Resources
