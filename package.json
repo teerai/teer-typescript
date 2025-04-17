@@ -1,0 +1,44 @@
+{
+  "name": "@teerai/sdk",
+  "version": "0.0.1",
+  "description": "Official TypeScript SDK for Teer API - Track and manage AI model usage",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "NODE_ENV=production tsup",
+    "dev": "NODE_ENV=development tsup --watch",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "npm run build",
+    "publish:patch": "npm version patch && npm publish --access public",
+    "publish:minor": "npm version minor && npm publish --access public",
+    "publish:major": "npm version major && npm publish --access public"
+  },
+  "keywords": [
+    "telemetry",
+    "teer",
+    "teerai",
+    "billing",
+    "usage-tracking",
+    "api-usage"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/teerai/teer-typescript.git"
+  },
+  "homepage": "https://github.com/teerai/teer-typescript",
+  "bugs": {
+    "url": "https://github.com/teerai/teer-typescript/issues"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.11",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {}
+}
