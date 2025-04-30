@@ -57,6 +57,11 @@ export interface IngestData {
 }
 
 /**
+ * Type definition for fetch function
+ */
+export type FetchFunction = typeof fetch
+
+/**
  * Options for configuring request behavior
  */
 export interface RequestConfigOptions {
@@ -79,4 +84,9 @@ export interface RequestConfigOptions {
    * Base delay between retries in milliseconds (will increase with exponential backoff)
    */
   retryDelayMs?: number
+
+  /**
+   * Custom fetch implementation
+   */
+  customFetch?: FetchFunction
 }

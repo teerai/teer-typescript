@@ -9,8 +9,8 @@ const TEER_TRACK_BASE_URL = 'https://track.teer.ai'
  */
 export class IngestResource extends Resource {
   constructor(client: TeerClient) {
-    // Use the track API URL for ingest operations
-    super(client, 'ingest', TEER_TRACK_BASE_URL)
+    const baseUrl = client.defaultRequestConfig.baseURL || TEER_TRACK_BASE_URL
+    super(client, 'ingest', baseUrl)
   }
 
   /**
