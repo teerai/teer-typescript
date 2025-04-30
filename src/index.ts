@@ -1,12 +1,32 @@
 import { version } from '../package.json'
 import { TeerError, TeerAPIError, TeerTimeoutError, TeerNetworkError } from './errors'
-import { RequestOptions, IngestData, RequestConfigOptions } from './types'
-import { Resource, IngestResource } from './resources'
+import { RequestOptions, IngestData, RequestConfigOptions, FetchFunction } from './types'
+import {
+  Resource,
+  IngestResource,
+  BillingResource,
+  MeterEventsResource,
+  MeterEventCreateParams,
+  MeterEvent,
+  MeterEventFieldsBase,
+  StripeMeterEventFields,
+  StripeMeterEventCreateParams,
+} from './resources'
 
 // Re-export error classes, types, and resources
 export { TeerError, TeerAPIError, TeerTimeoutError, TeerNetworkError }
-export { RequestOptions, IngestData, RequestConfigOptions }
-export { Resource, IngestResource }
+export { RequestOptions, IngestData, RequestConfigOptions, FetchFunction }
+export {
+  Resource,
+  IngestResource,
+  BillingResource,
+  MeterEventsResource,
+  MeterEventCreateParams,
+  MeterEvent,
+  MeterEventFieldsBase,
+  StripeMeterEventFields,
+  StripeMeterEventCreateParams,
+}
 
 // API base URL
 const TEER_API_BASE_URL = 'https://api.teer.ai'
@@ -29,11 +49,13 @@ export class Teer {
   public static readonly baseURL: string = TEER_API_BASE_URL
 
   public readonly ingest: IngestResource
+  public readonly billing: BillingResource
 
   // Private fields
   private readonly _apiKey: string
   private readonly _baseURL: string
   private readonly _defaultRequestConfig: RequestConfigOptions
+  private readonly _fetchImpl: FetchFunction
 
   /**
    * Create a new Teer client
@@ -43,13 +65,18 @@ export class Teer {
    */
   constructor(apiKey: string, options: RequestConfigOptions = {}) {
     this._apiKey = apiKey
-    this._baseURL = options.baseURL || TEER_API_BASE_URL
+    const baseURL = options.baseURL || TEER_API_BASE_URL
+    this._baseURL = baseURL
     this._defaultRequestConfig = {
+      baseURL,
       timeoutMs: options.timeoutMs || DEFAULT_TIMEOUT_MS,
       maxRetries: options.maxRetries || MAX_RETRIES,
       retryDelayMs: options.retryDelayMs || RETRY_DELAY_MS,
+      customFetch: options.customFetch,
     }
+    this._fetchImpl = options.customFetch ?? ((url, init) => fetch(url, init))
     this.ingest = new IngestResource(this)
+    this.billing = new BillingResource(this)
   }
 
   /**
@@ -97,7 +124,7 @@ export class Teer {
     const retryDelayMs = options.retryDelayMs ?? this._defaultRequestConfig.retryDelayMs ?? RETRY_DELAY_MS
 
     // Use the provided custom base URL or fall back to the instance base URL
-    const baseUrl = customBaseUrl || this.baseURL
+    const baseUrl = customBaseUrl || this._baseURL
     const url = `${baseUrl}/${Teer.namespace}/${path}`
 
     const headers: HeadersInit = {
@@ -135,7 +162,8 @@ export class Teer {
         }
 
         try {
-          const response = await fetch(url, fetchOptions)
+          // Use the custom fetch implementation
+          const response = await this._fetchImpl(url, fetchOptions)
           clearTimeout(timeoutId)
 
           // Handle API errors

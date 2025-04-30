@@ -12,6 +12,32 @@ export interface RequestOptions {
  */
 type BillingProvider = 'stripe'
 
+// Common billing fields without the meter/meters
+type BillingFieldsBase = {
+  customer: string
+  email?: string
+}
+
+// Single meter option
+type SingleMeterFields = BillingFieldsBase & {
+  meter: string
+  meters?: never
+}
+
+// Multiple meters option
+type MultiMeterFields = BillingFieldsBase & {
+  meter?: never
+  meters: Record<string, string>
+}
+
+// Union type that allows either single meter or multiple meters
+type BillingFields = SingleMeterFields | MultiMeterFields
+
+export interface TeerBillingConfig {
+  provider: BillingProvider
+  fields: BillingFields
+}
+
 export interface IngestData {
   provider: 'anthropic' | 'openai' | 'google'
   model: string
@@ -38,12 +64,7 @@ export interface IngestData {
   platform?: {
     rate_card_id: string
   }
-  billing?: {
-    provider: BillingProvider
-    fields: {
-      customer: string
-    }
-  }
+  billing?: TeerBillingConfig
   // Extensible metadata
   metadata?: Record<string, unknown>
 
@@ -55,6 +76,11 @@ export interface IngestData {
   // Execution context
   batch?: boolean // Whether this was part of a batch operation as it has impact on pricing
 }
+
+/**
+ * Type definition for fetch function
+ */
+export type FetchFunction = typeof fetch
 
 /**
  * Options for configuring request behavior
@@ -79,4 +105,9 @@ export interface RequestConfigOptions {
    * Base delay between retries in milliseconds (will increase with exponential backoff)
    */
   retryDelayMs?: number
+
+  /**
+   * Custom fetch implementation
+   */
+  customFetch?: FetchFunction
 }
