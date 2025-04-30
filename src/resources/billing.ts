@@ -1,0 +1,85 @@
+import { Resource, TeerClient } from './resource'
+import { RequestConfigOptions } from '../types'
+
+/**
+ * Parameters for creating a meter event
+ */
+export interface MeterEventCreateParams {
+  /**
+   * Optional identifier for the meter event
+   */
+  identifier?: string
+
+  /**
+   * Name of the event (required)
+   */
+  event_name: string
+
+  /**
+   * Optional timestamp for the event (ISO 8601 format)
+   */
+  timestamp?: string
+
+  /**
+   * Payload data for the event (required)
+   */
+  payload: {
+    stripe_customer_id: string
+    value: string
+  }
+}
+
+/**
+ * Response type for meter events
+ */
+export interface MeterEvent {
+  id: string
+  event_name: string
+  timestamp: string
+  payload: Record<string, any>
+  identifier?: string
+  created_at: string
+  updated_at: string
+}
+
+/**
+ * Resource for meter events operations
+ */
+export class MeterEventsResource extends Resource {
+  constructor(client: TeerClient) {
+    super(client, 'billing/meter-events')
+  }
+
+  /**
+   * Create a meter event to record usage
+   *
+   * @param params Parameters for creating a meter event
+   * @param options Optional request configuration
+   * @returns The created meter event
+   */
+  async create(params: MeterEventCreateParams, options?: RequestConfigOptions): Promise<MeterEvent> {
+    return this.request(
+      {
+        method: 'POST',
+        path: '',
+        data: params,
+      },
+      options
+    )
+  }
+}
+
+/**
+ * Billing Resource for handling billing operations
+ */
+export class BillingResource extends Resource {
+  /**
+   * Meter events resource for recording usage
+   */
+  public readonly meterEvents: MeterEventsResource
+
+  constructor(client: TeerClient) {
+    super(client, 'billing')
+    this.meterEvents = new MeterEventsResource(client)
+  }
+}

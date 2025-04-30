@@ -1,4 +1,4 @@
-import Teer, { TeerAPIError, TeerTimeoutError, TeerNetworkError, RequestConfigOptions } from '../src/index'
+import { Teer, TeerAPIError, TeerTimeoutError, TeerNetworkError } from '../src/index'
 
 async function main() {
   // Initialize the client with your API key and default request configuration

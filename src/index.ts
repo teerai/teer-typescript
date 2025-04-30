@@ -1,12 +1,12 @@
 import { version } from '../package.json'
 import { TeerError, TeerAPIError, TeerTimeoutError, TeerNetworkError } from './errors'
 import { RequestOptions, IngestData, RequestConfigOptions } from './types'
-import { Resource, IngestResource } from './resources'
+import { Resource, IngestResource, BillingResource, MeterEventsResource, MeterEventCreateParams, MeterEvent } from './resources'
 
 // Re-export error classes, types, and resources
 export { TeerError, TeerAPIError, TeerTimeoutError, TeerNetworkError }
 export { RequestOptions, IngestData, RequestConfigOptions }
-export { Resource, IngestResource }
+export { Resource, IngestResource, BillingResource, MeterEventsResource, MeterEventCreateParams, MeterEvent }
 
 // API base URL
 const TEER_API_BASE_URL = 'https://api.teer.ai'
@@ -29,6 +29,7 @@ export class Teer {
   public static readonly baseURL: string = TEER_API_BASE_URL
 
   public readonly ingest: IngestResource
+  public readonly billing: BillingResource
 
   // Private fields
   private readonly _apiKey: string
@@ -50,6 +51,7 @@ export class Teer {
       retryDelayMs: options.retryDelayMs || RETRY_DELAY_MS,
     }
     this.ingest = new IngestResource(this)
+    this.billing = new BillingResource(this)
   }
 
   /**
