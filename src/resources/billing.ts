@@ -2,9 +2,9 @@ import { Resource, TeerClient } from './resource'
 import { RequestConfigOptions } from '../types'
 
 /**
- * Parameters for creating a meter event
+ * Base interface for meter event fields
  */
-export interface MeterEventCreateParams {
+export interface MeterEventFieldsBase {
   /**
    * Optional identifier for the meter event
    */
@@ -19,15 +19,42 @@ export interface MeterEventCreateParams {
    * Optional timestamp for the event (ISO 8601 format)
    */
   timestamp?: string
+}
 
+/**
+ * Stripe-specific meter event fields
+ */
+export interface StripeMeterEventFields extends MeterEventFieldsBase {
   /**
-   * Payload data for the event (required)
+   * Payload data for the Stripe event
    */
   payload: {
     stripe_customer_id: string
     value: string
   }
 }
+
+/**
+ * Parameters for creating a meter event with Stripe provider
+ */
+export interface StripeMeterEventCreateParams {
+  /**
+   * Provider type - Stripe
+   */
+  provider: 'stripe'
+
+  /**
+   * Stripe-specific fields
+   */
+  fields: StripeMeterEventFields
+}
+
+/**
+ * Union type for all supported provider meter event params
+ */
+export type MeterEventCreateParams = StripeMeterEventCreateParams
+// Add more provider types here in the future, e.g.:
+// | OtherProviderMeterEventCreateParams
 
 /**
  * Response type for meter events

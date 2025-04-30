@@ -1,12 +1,32 @@
 import { version } from '../package.json'
 import { TeerError, TeerAPIError, TeerTimeoutError, TeerNetworkError } from './errors'
 import { RequestOptions, IngestData, RequestConfigOptions, FetchFunction } from './types'
-import { Resource, IngestResource, BillingResource, MeterEventsResource, MeterEventCreateParams, MeterEvent } from './resources'
+import {
+  Resource,
+  IngestResource,
+  BillingResource,
+  MeterEventsResource,
+  MeterEventCreateParams,
+  MeterEvent,
+  MeterEventFieldsBase,
+  StripeMeterEventFields,
+  StripeMeterEventCreateParams,
+} from './resources'
 
 // Re-export error classes, types, and resources
 export { TeerError, TeerAPIError, TeerTimeoutError, TeerNetworkError }
 export { RequestOptions, IngestData, RequestConfigOptions, FetchFunction }
-export { Resource, IngestResource, BillingResource, MeterEventsResource, MeterEventCreateParams, MeterEvent }
+export {
+  Resource,
+  IngestResource,
+  BillingResource,
+  MeterEventsResource,
+  MeterEventCreateParams,
+  MeterEvent,
+  MeterEventFieldsBase,
+  StripeMeterEventFields,
+  StripeMeterEventCreateParams,
+}
 
 // API base URL
 const TEER_API_BASE_URL = 'https://api.teer.ai'
