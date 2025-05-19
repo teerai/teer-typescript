@@ -30,6 +30,7 @@ export {
 
 // API base URL
 const TEER_API_BASE_URL = 'https://api.teer.ai'
+const TEER_TRACK_BASE_URL = 'https://track.teer.ai'
 
 // Default request timeout in milliseconds (10 seconds)
 const DEFAULT_TIMEOUT_MS = 10000
@@ -54,6 +55,7 @@ export class Teer {
   // Private fields
   private readonly _apiKey: string
   private readonly _baseURL: string
+  private readonly _trackURL: string
   private readonly _defaultRequestConfig: RequestConfigOptions
   private readonly _fetchImpl: FetchFunction
 
@@ -66,9 +68,12 @@ export class Teer {
   constructor(apiKey: string, options: RequestConfigOptions = {}) {
     this._apiKey = apiKey
     const baseURL = options.baseURL || TEER_API_BASE_URL
+    const trackURL = options.trackURL || TEER_TRACK_BASE_URL
     this._baseURL = baseURL
+    this._trackURL = trackURL
     this._defaultRequestConfig = {
       baseURL,
+      trackURL,
       timeoutMs: options.timeoutMs || DEFAULT_TIMEOUT_MS,
       maxRetries: options.maxRetries || MAX_RETRIES,
       retryDelayMs: options.retryDelayMs || RETRY_DELAY_MS,
@@ -94,6 +99,12 @@ export class Teer {
   }
 
   /**
+   * Get the tracking URL
+   */
+  get trackURL(): string {
+    return this._trackURL
+  }
+  /**
    * Get the default request configuration
    */
   get defaultRequestConfig(): RequestConfigOptions {
@@ -106,7 +117,7 @@ export class Teer {
    * @param path The path to the API endpoint
    * @param method The HTTP method to use
    * @param data The data to send with the request
-   * @param customBaseUrl Optional custom base URL to override the default
+   * @param resourceBaseUrl Optional resource-specific base URL (e.g., API URL or track URL)
    * @param options Additional request options
    * @returns The response from the API
    */
@@ -114,7 +125,7 @@ export class Teer {
     path: string,
     method: string,
     data?: any,
-    customBaseUrl?: string,
+    resourceBaseUrl?: string,
     options: RequestConfigOptions = {}
   ): Promise<T> {
     // Merge the provided options with the default request config
@@ -124,7 +135,7 @@ export class Teer {
     const retryDelayMs = options.retryDelayMs ?? this._defaultRequestConfig.retryDelayMs ?? RETRY_DELAY_MS
 
     // Use the provided custom base URL or fall back to the instance base URL
-    const baseUrl = customBaseUrl || this._baseURL
+    const baseUrl = resourceBaseUrl || this._baseURL
     const url = `${baseUrl}/${Teer.namespace}/${path}`
 
     const headers: HeadersInit = {

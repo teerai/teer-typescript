@@ -3,8 +3,9 @@ import { RequestOptions, RequestConfigOptions } from '../types'
 
 // Forward declaration to avoid circular dependency
 export interface TeerClient {
-  makeRequest<T = any>(path: string, method: string, data?: any, customBaseUrl?: string, options?: RequestConfigOptions): Promise<T>
+  makeRequest<T = any>(path: string, method: string, data?: any, resourceBaseUrl?: string, options?: RequestConfigOptions): Promise<T>
   readonly baseURL: string
+  readonly trackURL: string
   readonly defaultRequestConfig: RequestConfigOptions
 }
 
@@ -12,7 +13,7 @@ export interface TeerClient {
  * Base Resource class that all resource classes will extend
  */
 export abstract class Resource {
-  constructor(protected client: TeerClient, protected basePath: string = '', protected customBaseUrl?: string) {}
+  constructor(protected client: TeerClient, protected basePath: string = '', protected resourceBaseUrl?: string) {}
 
   /**
    * Get the full path for this resource
@@ -34,7 +35,7 @@ export abstract class Resource {
     try {
       const { method, path, data } = options
       const fullPath = this.getPath(path)
-      return await this.client.makeRequest<T>(fullPath, method, data, this.customBaseUrl, requestOptions)
+      return await this.client.makeRequest<T>(fullPath, method, data, this.resourceBaseUrl, requestOptions)
     } catch (error) {
       // Wrap network errors that aren't already TeerErrors
       if (error instanceof Error && !(error instanceof TeerError)) {
@@ -44,7 +45,7 @@ export abstract class Resource {
             request: {
               method: options.method,
               path: this.getPath(options.path),
-              baseUrl: this.customBaseUrl || this.client.baseURL,
+              baseUrl: this.resourceBaseUrl || this.client.baseURL,
             },
           })
         }

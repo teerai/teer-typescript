@@ -89,9 +89,15 @@ export type FetchFunction = typeof fetch
  */
 export interface RequestConfigOptions {
   /**
-   * Custom base URL for the API
+   * Custom base URL for the Public API
    */
   baseURL?: string
+  /**
+   * Custom base URL for the Tracking API
+   * Used for endpoints that handle tracking and data collection operations
+   * like ingest and billing meter events
+   */
+  trackURL?: string
 
   /**
    * Request timeout in milliseconds

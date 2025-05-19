@@ -74,7 +74,8 @@ export interface MeterEvent {
  */
 export class MeterEventsResource extends Resource {
   constructor(client: TeerClient) {
-    super(client, 'billing/meter-events')
+    const resourceBaseUrl = client.defaultRequestConfig.trackURL
+    super(client, 'billing/meter-events', resourceBaseUrl)
   }
 
   /**
@@ -106,7 +107,8 @@ export class BillingResource extends Resource {
   public readonly meterEvents: MeterEventsResource
 
   constructor(client: TeerClient) {
-    super(client, 'billing')
+    const resourceBaseUrl = client.defaultRequestConfig.trackURL
+    super(client, 'billing', resourceBaseUrl)
     this.meterEvents = new MeterEventsResource(client)
   }
 }
