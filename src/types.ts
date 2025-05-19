@@ -55,11 +55,15 @@ export interface IngestData {
       }
       google?: {
         cached_content_token_count?: number
+        thoughts_token_count?: number
       }
     }
   }
   // Identification
   function_id?: string
+  response_id?: string
+  response_model?: string
+  operation_id?: string
   // Teer specific metadata
   platform?: {
     rate_card_id: string
@@ -67,12 +71,10 @@ export interface IngestData {
   billing?: TeerBillingConfig
   // Extensible metadata
   metadata?: Record<string, unknown>
-
   // Tracing metadata
   trace_id?: string
   span_id?: string
   parent_span_id?: string
-
   // Execution context
   batch?: boolean // Whether this was part of a batch operation as it has impact on pricing
 }
